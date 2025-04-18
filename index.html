@@ -92,7 +92,7 @@
       [80000, 990, 165, 25], [83000, 1030, 170, 25], [86000, 1070, 180, 25]
     ];
 
-   unction calculateResources() {
+    function calculateResources() {
       const startLevel = parseInt(document.getElementById('start_level').value);
       const endLevel = parseInt(document.getElementById('end_level').value);
 
@@ -102,7 +102,7 @@
         return;
       }
 
-      let totalResources = [0, 0, 0, 0];
+      let totalResources = [0, 0, 0, 0]; // [Hardened Alloy, Polishing Solution, Design Plans, Lunar Amber]
 
       for (let i = startLevel; i < endLevel; i++) {
         const [alloy, polish, plans, amber] = upgradeCosts[i];
