@@ -93,35 +93,51 @@
     ];
 
     function calculateResources() {
-      const startLevel = parseInt(document.getElementById('start_level').value);
-      const endLevel = parseInt(document.getElementById('end_level').value);
+  const startLevel = parseInt(document.getElementById('start_level').value);
+  const endLevel = parseInt(document.getElementById('end_level').value);
 
-      if (isNaN(startLevel) || isNaN(endLevel) || startLevel < 0 || endLevel > 40 || startLevel >= endLevel) {
-        document.getElementById('result').innerHTML =
-          "กรุณากรอกระดับเริ่มต้นและระดับสิ้นสุดที่ถูกต้อง (0 ≤ Start Level < End Level ≤ 40)";
-        return;
-      }
+  if (isNaN(startLevel) || isNaN(endLevel) || startLevel < 0 || endLevel > 40 || startLevel >= endLevel) {
+    document.getElementById('result').innerHTML =
+      "กรุณากรอกระดับเริ่มต้นและระดับสิ้นสุดที่ถูกต้อง (0 ≤ Start Level < End Level ≤ 40)";
+    return;
+  }
 
-      let totalResources = [0, 0, 0, 0]; // [Hardened Alloy, Polishing Solution, Design Plans, Lunar Amber]
+  let pairedSums = [];
 
-      for (let i = startLevel; i < endLevel; i++) {
-        const [alloy, polish, plans, amber] = upgradeCosts[i];
-        totalResources[0] += alloy;
-        totalResources[1] += polish;
-        totalResources[2] += plans;
-        totalResources[3] += amber;
-      }
+  // รวมแบบจับคู่ทีละ 2 level
+  for (let i = startLevel; i < endLevel - 1; i += 2) {
+    let a = upgradeCosts[i];
+    let b = upgradeCosts[i + 1];
+    pairedSums.push([
+      a[0] + b[0],
+      a[1] + b[1],
+      a[2] + b[2],
+      a[3] + b[3]
+    ]);
+  }
 
-      document.getElementById('result').innerHTML = `
-        <p>Resources required from level ${startLevel} to ${endLevel}:</p>
-        <ul>
-          <li><strong>Hardened Alloy:</strong> ${totalResources[0]}</li>
-          <li><strong>Polishing Solution:</strong> ${totalResources[1]}</li>
-          <li><strong>Design Plans:</strong> ${totalResources[2]}</li>
-          <li><strong>Lunar Amber:</strong> ${totalResources[3]}</li>
-        </ul>
-      `;
-    }
-  </script>
-</body>
-</html>
+  // ถ้า endLevel เป็นเลขคี่ (เช่น start = 0, end = 5) ให้บวกตัวสุดท้ายเพิ่ม
+  if ((endLevel - startLevel) % 2 !== 0) {
+    let last = upgradeCosts[endLevel - 1];
+    pairedSums.push(last);
+  }
+
+  // รวมทุกคู่เข้าด้วยกัน
+  let totalResources = [0, 0, 0, 0];
+  pairedSums.forEach(r => {
+    totalResources[0] += r[0];
+    totalResources[1] += r[1];
+    totalResources[2] += r[2];
+    totalResources[3] += r[3];
+  });
+
+  document.getElementById('result').innerHTML = `
+    <p>Resources required from level ${startLevel} to ${endLevel} (paired calculation):</p>
+    <ul>
+      <li><strong>Hardened Alloy:</strong> ${totalResources[0]}</li>
+      <li><strong>Polishing Solution:</strong> ${totalResources[1]}</li>
+      <li><strong>Design Plans:</strong> ${totalResources[2]}</li>
+      <li><strong>Lunar Amber:</strong> ${totalResources[3]}</li>
+    </ul>
+  `;
+}
