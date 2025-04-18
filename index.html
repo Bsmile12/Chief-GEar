@@ -113,14 +113,14 @@
       }
 
       document.getElementById('result').innerHTML = `
-        <p>Resources required from level ${startLevel} to ${endLevel}:</p>
-        <ul>
-          <li><strong>Hardened Alloy:</strong> ${totalResources[0]}</li>
-          <li><strong>Polishing Solution:</strong> ${totalResources[1]}</li>
-          <li><strong>Design Plans:</strong> ${totalResources[2]}</li>
-          <li><strong>Lunar Amber:</strong> ${totalResources[3]}</li>
-        </ul>
-      `;
+      <p>Resources required from level ${startLevel} to ${endLevel}:</p>
+      <ul>
+      <li><strong>Hardened Alloy:</strong> ${totalResources[0].toLocaleString()}</li>
+      <li><strong>Polishing Solution:</strong> ${totalResources[1].toLocaleString()}</li>
+      <li><strong>Design Plans:</strong> ${totalResources[2].toLocaleString()}</li>
+      <li><strong>Lunar Amber:</strong> ${totalResources[3].toLocaleString()}</li>
+    </ul>
+  `;
     }
   </script>
 </body>
